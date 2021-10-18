@@ -1,9 +1,10 @@
 import pandas as pd
 import glob
+import numpy as np
 import os
 #define a folder path where you have all the csv files without header
-path_in = "/media/amrgaballah/Backup_Plus/exp_j1/features/clean/"
-path_out= "/media/amrgaballah/Backup_Plus/exp_j1/features/feat_avg_10/"
+path_in = "//media/amrgaballah/Seagate Backup Plus Drive/Journal_paper_MSF_revised_data/latestexp_2021/features/Noisy/IS2011/"
+path_out= "//media/amrgaballah/Seagate Backup Plus Drive/Journal_paper_MSF_revised_data/latestexp_2021/features/Noisy_feat_avg_10/IS2011/"
 
 if not os.path.exists(path_out):
     os.makedirs(path_out)
@@ -35,6 +36,10 @@ for root,dirs,filenames in os.walk(path_in):
         # pd.concat(objs,axis=0,join="outer",ignore_index=False,keys=None,levels=None,names=None,verify_integrity=False,copy=True)
         df23 = np.vstack((df22,df2))
         print(df23.shape)
-        
-        df_file=pd.DataFrame(df23)
+        df1 = np.repeat(np.array([filename]), df23.shape[0])
+       
+        a = np.arange(start=0, stop=np.round(0.1*df23.shape[0],3), step=0.1)
+        out = np.hstack((df1[:,None], a[:, None],df23))
+
+        df_file=pd.DataFrame(out)
         df_file.to_csv(path_out1+ filename, header=None, index= None)
